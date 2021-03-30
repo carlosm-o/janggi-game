@@ -179,12 +179,25 @@ class JanggiGame:
 
         return (move_from_row, move_from_col)
 
+    def get_move_to_coord(self, end):
+
+        end_sq = self.convert_user_input(end)
+
+        move_to_row = int(end_sq[0])
+        move_to_col = int(end_sq[1])
+
+        return (move_to_row, move_to_col)
+
     def get_piece_moved(self, start):
 
         piece_moved = self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]]
         
         return piece_moved
 
+    def get_piece_taken(self, end):
+        piece_taken = self._board[self.get_move_to_coord(end)[0]][self.get_move_to_coord(end)[1]]
+
+        return piece_taken
     def make_move(self, start, end):
         """
         Moves the pieces after validating that the move can be 
@@ -199,16 +212,16 @@ class JanggiGame:
 
         # converts user input to board index notation
         # start_sq = self.convert_user_input(start)
-        end_sq = self.convert_user_input(end)
+        # end_sq = self.convert_user_input(end)
 
         # move_from_row = int(start_sq[0])
         # move_from_col = int(start_sq[1])
-        move_to_row = int(end_sq[0])
-        move_to_col = int(end_sq[1])
+        # move_to_row = int(end_sq[0])
+        # move_to_col = int(end_sq[1])
 
         # piece_moved = self._board[move_from_row][move_from_col]
 
-        piece_taken = self._board[move_to_row][move_to_col]
+        # piece_taken = self._board[move_to_row][move_to_col]
 
         # pass the turn to the other player
         if start == end and self.get_piece_moved(start) != "--":
@@ -228,22 +241,23 @@ class JanggiGame:
             return False
 
         # check if piece is trying to capture its own piece
-        if self.get_piece_moved(start)[0] == piece_taken[0]:
+        if self.get_piece_moved(start)[0] == self.get_piece_taken(end)[0]:
             return False
         
         # make a copy of the board before move
         board_backup = [list(i) for i in self._board]
 
+        print(self.get_move_to_coord(end))
+
         # create validation tuples
-        validate = (self.get_piece_moved(start), (int(end_sq[0]), int(end_sq[1])))
+        validate = (self.get_piece_moved(start), self.get_move_to_coord(end))
 
         valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
 
         # if all is good, move the piece
         if validate in valid_moves:
-            self._board[move_to_row][move_to_col] = self.get_piece_moved(start)
+            self._board[self.get_move_to_coord(end)[0]][self.get_move_to_coord(end)[1]] = self.get_piece_moved(start)
             self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]] = "--"            
-            
         else:
             return False
 
