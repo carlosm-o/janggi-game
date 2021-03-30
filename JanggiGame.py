@@ -107,6 +107,9 @@ class JanggiGame:
 
         return self._piece.get_all_valid_moves()
 
+    def switch_player(self):
+        self._blue_turn = not self._blue_turn
+
     def is_checkmated(self):
         """
         Checks to see if the other team is in checkmake
@@ -114,7 +117,7 @@ class JanggiGame:
         if no valid moves remain then checkmate has occurred
         """
         # switch player
-        self._blue_turn = not self._blue_turn
+        self.switch_player()
 
         # reset player move list
         self._piece.reset_moves_list()
@@ -156,11 +159,11 @@ class JanggiGame:
                         self._game_state = "BLUE_WON"
                         return True
             else:
-                self._blue_turn = not self._blue_turn
+                self.switch_player()
                 self._board = board_backup
                 return False
 
-        self._blue_turn = not self._blue_turn
+        self.switch_player()
 
         return False
 
@@ -189,7 +192,7 @@ class JanggiGame:
         # pass the turn to the other player
         if start == end and piece_moved != "--":
             # change player turn
-            self._blue_turn = not self._blue_turn
+            self.switch_player()
             return True
 
         # check if piece exists on starting spot
@@ -239,7 +242,7 @@ class JanggiGame:
             return True
 
         # switch players
-        self._blue_turn = not self._blue_turn
+        self.switch_player()
 
         return True
 
