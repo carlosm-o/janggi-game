@@ -170,11 +170,22 @@ class JanggiGame:
 
         return False
 
+    def get_piece_moved(self, start):
+        start_sq = self.convert_user_input(start)
+
+        move_from_row = int(start_sq[0])
+        move_from_col = int(start_sq[1])
+
+        piece_moved = self._board[move_from_row][move_from_col]
+        
+        return piece_moved
+
     def make_move(self, start, end):
         """
         Moves the pieces after validating that the move can be 
         made
         """
+
         # check g state
         if self._game_state != "UNFINISHED":
             return False
@@ -189,42 +200,45 @@ class JanggiGame:
         move_from_col = int(start_sq[1])
         move_to_row = int(end_sq[0])
         move_to_col = int(end_sq[1])
-        piece_moved = self._board[move_from_row][move_from_col]
+
+        # piece_moved = self._board[move_from_row][move_from_col]
+
         piece_taken = self._board[move_to_row][move_to_col]
 
         # pass the turn to the other player
-        if start == end and piece_moved != "--":
+        if start == end and self.get_piece_moved(start) != "--":
             # change player turn
             self.switch_player()
             return True
 
         # check if piece exists on starting spot
-        if piece_moved == "--":
+        if self.get_piece_moved(start) == "--":
             return False
 
         # check if it is correct turn
-        if self._blue_turn is False and piece_moved[0] == "b":
+        if self._blue_turn is False and self.get_piece_moved(start)[0] == "b":
             return False
 
-        if self._blue_turn is True and piece_moved[0] == "r":
+        if self._blue_turn is True and self.get_piece_moved(start)[0] == "r":
             return False
 
         # check if piece is trying to capture its own piece
-        if piece_moved[0] == piece_taken[0]:
+        if self.get_piece_moved(start)[0] == piece_taken[0]:
             return False
-
-        # create validation tuples
-        validate = (piece_moved, (int(end_sq[0]), int(end_sq[1])))
-
-        valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
-
+        
         # make a copy of the board before move
         board_backup = [list(i) for i in self._board]
 
+        # create validation tuples
+        validate = (self.get_piece_moved(start), (int(end_sq[0]), int(end_sq[1])))
+
+        valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
+
         # if all is good, move the piece
         if validate in valid_moves:
-            self._board[move_from_row][move_from_col] = "--"
-            self._board[move_to_row][move_to_col] = piece_moved
+            self._board[move_to_row][move_to_col] = self.get_piece_moved(start)
+            self._board[move_from_row][move_from_col] = "--"            
+            
         else:
             return False
 
@@ -1612,6 +1626,9 @@ class Piece:
 if __name__ == "__main__":
 
     g = JanggiGame()
+
+
+    g.make_move('a7', 'a6')
 
 
     g.print_board()
