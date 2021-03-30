@@ -198,30 +198,27 @@ class JanggiGame:
         piece_taken = self._board[self.get_move_to_coord(end)[0]][self.get_move_to_coord(end)[1]]
 
         return piece_taken
+
+    def validate_move(self, start, end):
+
+        validate = (self.get_piece_moved(start), self.get_move_to_coord(end))
+
+        valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
+
+        if validate in valid_moves:
+            return True
+
     def make_move(self, start, end):
         """
         Moves the pieces after validating that the move can be 
         made
         """
 
-        # check g state
+        # check game state
         if self._game_state != "UNFINISHED":
             return False
 
         self._piece.reset_moves_list()
-
-        # converts user input to board index notation
-        # start_sq = self.convert_user_input(start)
-        # end_sq = self.convert_user_input(end)
-
-        # move_from_row = int(start_sq[0])
-        # move_from_col = int(start_sq[1])
-        # move_to_row = int(end_sq[0])
-        # move_to_col = int(end_sq[1])
-
-        # piece_moved = self._board[move_from_row][move_from_col]
-
-        # piece_taken = self._board[move_to_row][move_to_col]
 
         # pass the turn to the other player
         if start == end and self.get_piece_moved(start) != "--":
@@ -247,15 +244,8 @@ class JanggiGame:
         # make a copy of the board before move
         board_backup = [list(i) for i in self._board]
 
-        print(self.get_move_to_coord(end))
-
-        # create validation tuples
-        validate = (self.get_piece_moved(start), self.get_move_to_coord(end))
-
-        valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
-
         # if all is good, move the piece
-        if validate in valid_moves:
+        if self.validate_move(start, end):
             self._board[self.get_move_to_coord(end)[0]][self.get_move_to_coord(end)[1]] = self.get_piece_moved(start)
             self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]] = "--"            
         else:
@@ -265,7 +255,7 @@ class JanggiGame:
         # and verify checkmate condition
         if self.is_in_check(self.get_color()):
             self._board = board_backup
-            return False
+            return False        
 
         # check if the other team is mated
         if self.is_checkmated():
@@ -1645,9 +1635,17 @@ class Piece:
 if __name__ == "__main__":
 
     g = JanggiGame()
-
-
-    g.make_move('a7', 'a6')
+    print(g.get_turn())
+    g.make_move('c10', 'd8') #blue horse moves
+    print(g.get_turn())
+    g.make_move('c1','d3') #red horse move
+    print(g.get_turn())
+    g.make_move('c7','d7') #blue soldier moves to block the blue horse
+    print(g.get_turn())
+    g.make_move('c4','d4')
+    print(g.get_turn())
+    g.make_move('d8','c6')
+    print(g.get_turn())
 
 
     g.print_board()
