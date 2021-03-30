@@ -110,6 +110,15 @@ class JanggiGame:
     def switch_player(self):
         self._blue_turn = not self._blue_turn
 
+    def get_color(self):
+
+        if self._blue_turn:
+            color = "blue"
+        else:
+            color = "red"
+
+        return color
+
     def is_checkmated(self):
         """
         Checks to see if the other team is in checkmake
@@ -139,15 +148,9 @@ class JanggiGame:
 
             self._board[move_from_row][move_from_col] = "--"
             self._board[move_to_row][move_to_col] = piece_moved
-
-            # generate color for the player moving
-            if self._blue_turn:
-                color = "blue"
-            else:
-                color = "red"
             
             # remove the move if check still occurs
-            if self.is_in_check(color):
+            if self.is_in_check(self.get_color()):
                 valid_moves.remove(i)
                 self._board = board_backup
                 if len(valid_moves) == 3:
@@ -210,12 +213,6 @@ class JanggiGame:
         if piece_moved[0] == piece_taken[0]:
             return False
 
-        # set colors
-        if self._blue_turn:
-            color = "blue"
-        else:
-            color = "red"
-
         # create validation tuples
         validate = (piece_moved, (int(end_sq[0]), int(end_sq[1])))
 
@@ -233,7 +230,7 @@ class JanggiGame:
 
         # verifies that move did not put current color in check
         # and verify checkmate condition
-        if self.is_in_check(color):
+        if self.is_in_check(self.get_color()):
             self._board = board_backup
             return False
 
