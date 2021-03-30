@@ -170,13 +170,18 @@ class JanggiGame:
 
         return False
 
-    def get_piece_moved(self, start):
+    def get_move_from_coord(self, start):
+
         start_sq = self.convert_user_input(start)
 
         move_from_row = int(start_sq[0])
         move_from_col = int(start_sq[1])
 
-        piece_moved = self._board[move_from_row][move_from_col]
+        return (move_from_row, move_from_col)
+
+    def get_piece_moved(self, start):
+
+        piece_moved = self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]]
         
         return piece_moved
 
@@ -193,11 +198,11 @@ class JanggiGame:
         self._piece.reset_moves_list()
 
         # converts user input to board index notation
-        start_sq = self.convert_user_input(start)
+        # start_sq = self.convert_user_input(start)
         end_sq = self.convert_user_input(end)
 
-        move_from_row = int(start_sq[0])
-        move_from_col = int(start_sq[1])
+        # move_from_row = int(start_sq[0])
+        # move_from_col = int(start_sq[1])
         move_to_row = int(end_sq[0])
         move_to_col = int(end_sq[1])
 
@@ -237,7 +242,7 @@ class JanggiGame:
         # if all is good, move the piece
         if validate in valid_moves:
             self._board[move_to_row][move_to_col] = self.get_piece_moved(start)
-            self._board[move_from_row][move_from_col] = "--"            
+            self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]] = "--"            
             
         else:
             return False
