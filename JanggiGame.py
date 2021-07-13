@@ -79,7 +79,7 @@ class JanggiGame:
             if blue_gen_pos[0] in red_moves:
                 return True            
             
-        elif color == "red":
+        if color == "red":
             red_gen_pos = []
 
             for r in range(len(self._board)):
@@ -107,18 +107,6 @@ class JanggiGame:
 
         return self._piece.get_all_valid_moves()
 
-    def switch_player(self):
-        self._blue_turn = not self._blue_turn
-
-    def get_color(self):
-
-        if self._blue_turn:
-            color = "blue"
-        else:
-            color = "red"
-
-        return color
-
     def is_checkmated(self):
         """
         Checks to see if the other team is in checkmake
@@ -126,7 +114,7 @@ class JanggiGame:
         if no valid moves remain then checkmate has occurred
         """
         # switch player
-        self.switch_player()
+        self._blue_turn = not self._blue_turn
 
         # reset player move list
         self._piece.reset_moves_list()
@@ -148,9 +136,15 @@ class JanggiGame:
 
             self._board[move_from_row][move_from_col] = "--"
             self._board[move_to_row][move_to_col] = piece_moved
+
+            # generate color for the player moving
+            if self._blue_turn:
+                color = "blue"
+            else:
+                color = "red"
             
             # remove the move if check still occurs
-            if self.is_in_check(self.get_color()):
+            if self.is_in_check(color):
                 valid_moves.remove(i)
                 self._board = board_backup
                 if len(valid_moves) == 3:
@@ -162,107 +156,90 @@ class JanggiGame:
                         self._game_state = "BLUE_WON"
                         return True
             else:
-                self.switch_player()
+                self._blue_turn = not self._blue_turn
                 self._board = board_backup
                 return False
 
-        self.switch_player()
+        self._blue_turn = not self._blue_turn
 
         return False
-
-    def get_move_from_coord(self, start):
-
-        start_sq = self.convert_user_input(start)
-
-        move_from_row = int(start_sq[0])
-        move_from_col = int(start_sq[1])
-
-        return (move_from_row, move_from_col)
-
-    def get_move_to_coord(self, end):
-
-        end_sq = self.convert_user_input(end)
-
-        move_to_row = int(end_sq[0])
-        move_to_col = int(end_sq[1])
-
-        return (move_to_row, move_to_col)
-
-    def get_piece_moved(self, start):
-
-        piece_moved = self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]]
-        
-        return piece_moved
-
-    def get_piece_taken(self, end):
-        piece_taken = self._board[self.get_move_to_coord(end)[0]][self.get_move_to_coord(end)[1]]
-
-        return piece_taken
-
-    def validate_move(self, start, end):
-
-        validate = (self.get_piece_moved(start), self.get_move_to_coord(end))
-
-        valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
-
-        if validate in valid_moves:
-            return True
 
     def make_move(self, start, end):
         """
         Moves the pieces after validating that the move can be 
         made
         """
-
-        # check game state
+        # check g state
         if self._game_state != "UNFINISHED":
             return False
 
         self._piece.reset_moves_list()
 
+        # converts user input to board index notation
+        start_sq = self.convert_user_input(start)
+        end_sq = self.convert_user_input(end)
+
+        move_from_row = int(start_sq[0])
+        move_from_col = int(start_sq[1])
+        move_to_row = int(end_sq[0])
+        move_to_col = int(end_sq[1])
+        piece_moved = self._board[move_from_row][move_from_col]
+        piece_taken = self._board[move_to_row][move_to_col]
+
         # pass the turn to the other player
-        if start == end and self.get_piece_moved(start) != "--":
+        if start == end and piece_moved != "--":
             # change player turn
-            self.switch_player()
+            self._blue_turn = not self._blue_turn
             return True
 
         # check if piece exists on starting spot
-        if self.get_piece_moved(start) == "--":
+        if piece_moved == "--":
             return False
 
         # check if it is correct turn
-        if self._blue_turn is False and self.get_piece_moved(start)[0] == "b":
+        if self._blue_turn is False and piece_moved[0] == "b":
             return False
 
-        if self._blue_turn is True and self.get_piece_moved(start)[0] == "r":
+        if self._blue_turn is True and piece_moved[0] == "r":
             return False
 
         # check if piece is trying to capture its own piece
-        if self.get_piece_moved(start)[0] == self.get_piece_taken(end)[0]:
+        if piece_moved[0] == piece_taken[0]:
             return False
-        
+
+        # set colors
+        if self._blue_turn:
+            color = "blue"
+        else:
+            color = "red"
+
+        # create validation tuples
+        validate = (piece_moved, (int(end_sq[0]), int(end_sq[1])))
+
+        valid_moves = [(i[0],i[2]) for i in self._piece.get_all_valid_moves()]
+
         # make a copy of the board before move
         board_backup = [list(i) for i in self._board]
 
         # if all is good, move the piece
-        if self.validate_move(start, end):
-            self._board[self.get_move_to_coord(end)[0]][self.get_move_to_coord(end)[1]] = self.get_piece_moved(start)
-            self._board[self.get_move_from_coord(start)[0]][self.get_move_from_coord(start)[1]] = "--"            
+        if validate in valid_moves:
+            self._board[move_from_row][move_from_col] = "--"
+            self._board[move_to_row][move_to_col] = piece_moved
         else:
             return False
 
         # verifies that move did not put current color in check
         # and verify checkmate condition
-        if self.is_in_check(self.get_color()):
+        if self.is_in_check(color):
             self._board = board_backup
-            return False        
+            return False
 
         # check if the other team is mated
         if self.is_checkmated():
             return True
 
         # switch players
-        self.switch_player()
+        self._blue_turn = not self._blue_turn
 
         return True
 
@@ -323,7 +300,15 @@ class Piece:
         """
         self._game = game
         self._moves = []
-
+        self._move_functions = {
+            "C": self.get_chariot_moves,
+            "E": self.get_elephant_moves,
+            "H": self.get_horse_moves,
+            "G": self.get_guard_moves,
+            "K": self.get_general_moves,
+            "F": self.get_cannon_moves,    
+            "S": self.get_soldier_moves    
+        }
 
     def reset_moves_list(self):
         """
@@ -344,21 +329,7 @@ class Piece:
                     color == "r" and not self._game.get_turn()
                 ):
                     piece = self._game.get_board()[r][c][1]
-                    # C: Chariot, E: Elephant, H: Horse, G: Guard, K: General, F: Cannon, S: Soldier
-                    if piece == "C":
-                        self.get_chariot_moves(r, c)
-                    elif piece == "E":
-                        self.get_elephant_moves(r, c)
-                    elif piece == "H":
-                        self.get_horse_moves(r, c)
-                    elif piece == "G":
-                        self.get_guard_moves(r, c)
-                    elif piece == "K":
-                        self.get_general_moves(r, c)
-                    elif piece == "F":
-                        self.get_cannon_moves(r, c)
-                    elif piece == "S":
-                        self.get_soldier_moves(r, c)
+                    self._move_functions[piece](r, c)
 
         return self._moves
 
@@ -1635,17 +1606,11 @@ class Piece:
 if __name__ == "__main__":
 
     g = JanggiGame()
-    print(g.get_turn())
-    g.make_move('c10', 'd8') #blue horse moves
-    print(g.get_turn())
-    g.make_move('c1','d3') #red horse move
-    print(g.get_turn())
-    g.make_move('c7','d7') #blue soldier moves to block the blue horse
-    print(g.get_turn())
-    g.make_move('c4','d4')
-    print(g.get_turn())
-    g.make_move('d8','c6')
-    print(g.get_turn())
-
+    g.make_move('a7', 'a6') # first move by Blue
+    g.make_move('a4', 'a4') # passing move by Red
+    g.make_move('a6', 'a5') # valid move by Blue
+    g.make_move('e4', 'e5') # valid move by Red
+    g.make_move('a5', 'a4') # capturing move by Blue
+    g.make_move('c4', 'c5') # valid move by Red
 
     g.print_board()

@@ -9,27 +9,23 @@ class TestJanggiGame(unittest.TestCase):
         self.invalid_move = False
         self.valid_move = True
 
-#    @visibility('visible')
     def test_game_can_be_instantiated(self):
         """test that we can create a JanggiGame object"""
         g = JanggiGame()
         self.assertIsInstance(g, JanggiGame)
 
-#    @visibility('visible')
     def test_that_blue_can_start_the_game(self):
         """RULES: Blue can start the game"""
         g = JanggiGame()
         blue_move = g.make_move('c7', 'c6')
         self.assertIs(blue_move, True)
 
-#    @visibility('after_due_date')
     def test_that_red_cannot_start_the_game(self):
         """RULES: Red cannot start the game"""
         g = JanggiGame()
         red_move = g.make_move('c4', 'c5')
         self.assertIs(red_move, False)
 
-#    @visibility('visible')
     def test_passing_the_turn(self):
         """RULES: test that a player can pass the turn"""
         g = JanggiGame()
@@ -39,7 +35,6 @@ class TestJanggiGame(unittest.TestCase):
         move_result = g.make_move('b7', 'b7') # passing move by Blue
         self.assertIs(move_result, True)
 
-#    @visibility('after_due_date')
     def test_passing_the_turn_after_capturing(self):
         """RULES: test that a player can pass the turn, a turn after capturing another player's piece"""
         g = JanggiGame()
@@ -54,7 +49,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_move_after_passing = g.make_move('c5', 'c6')  # valid move by Red
         self.assertIs(valid_move_after_passing, True)
 
-#    @visibility('after_due_date')
     def test_passing_the_turn_after_being_captured(self):
         """RULES: test that a player can pass the turn, after their piece has been captured"""
         g = JanggiGame()
@@ -68,7 +62,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_move_after_passing = g.make_move('a4', 'a3')  # valid move by Blue
         self.assertIs(valid_move_after_passing, True)
 
-#    @visibility('visible')
     def test_valid_forward_move_for_red_soldier(self):
         """SOLDIER: test in the beginning of the game that a red soldier can perform a valid forward move"""
         #take a soldier for red
@@ -77,7 +70,6 @@ class TestJanggiGame(unittest.TestCase):
         red_soldier_forward_move = g.make_move('c4','c5')
         self.assertIs(red_soldier_forward_move, True)
 
-#    @visibility('visible')
     def test_valid_sideway_move_for_red_soldier(self):
         """SOLDIER: test in the beginning of the game that a red soldier can perform a valid sideway move"""
         # take a soldier for red
@@ -86,21 +78,18 @@ class TestJanggiGame(unittest.TestCase):
         red_soldier_sideway_move = g.make_move('c4', 'd4')
         self.assertIs(red_soldier_sideway_move, True)
 
-#    @visibility('visible')
     def test_valid_forward_move_for_blue_soldier(self):
         """SOLDIER: test in the beginning of the game that a blue soldier can perform a valid forward move"""
         g = JanggiGame()
         blue_soldier_forward_move = g.make_move('c7', 'c6')  # because blue moves first
         self.assertIs(blue_soldier_forward_move, True)
 
-#    @visibility('visible')
     def test_valid_sideway_move_for_blue_soldier(self):
         """SOLDIER: test in the beginning of the game that a blue soldier can perform a valid sideway move"""
         g = JanggiGame()
         blue_soldier_sideway_move = g.make_move('c7', 'b7')  # because blue moves first
         self.assertIs(blue_soldier_sideway_move, True)
 
-#    @visibility('after_due_date')
     def test_invalid_backward_move_for_blue_soldier(self):
         """SOLDIER: test in the beginning of the game that a blue soldier cannot perform an backward move"""
         g = JanggiGame()
@@ -108,7 +97,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(blue_soldier_backward_move, False)
         pass
 
-#    @visibility('after_due_date')
     def test_invalid_diagonal_move_for_blue_soldier(self):
         """SOLDIER: test in the beginning of the game that a blue soldier cannot perform an diagonal move"""
         g = JanggiGame()
@@ -116,7 +104,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(blue_soldier_diagonal_move, False)
         pass
 
-#    @visibility('after_due_date')
     def test_invalid_backward_move_for_red_soldier(self):
         """SOLDIER: test in the beginning of the game that a red soldier cannot perform an backward move"""
         g = JanggiGame()
@@ -125,7 +112,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(red_soldier_backward_move, False)
         pass
 
-#    @visibility('after_due_date')
     def test_invalid_diagonal_move_for_red_soldier(self):
         """SOLDIER: test in the beginning of the game that a red soldier cannot perform an diagonal move"""
         g = JanggiGame()
@@ -133,7 +119,6 @@ class TestJanggiGame(unittest.TestCase):
         red_soldier_backward_move = g.make_move('c4', 'd5')  # try diagonal move which is illegal
         self.assertIs(red_soldier_backward_move, False)
 
-#    @visibility('visible')
     def test_a_soldier_can_capture_a_piece(self):
         """SOLDIER: test that a soldier can capture another piece"""
         g = JanggiGame()
@@ -144,7 +129,6 @@ class TestJanggiGame(unittest.TestCase):
         capturing_move = g.make_move('a5', 'a4') # capturing move by Blue
         self.assertIs(capturing_move, True) #move should be succesful
 
-#    @visibility('after_due_date')
     def test_that_a_captured_piece_cannot_be_moved(self):
         """RULES: test that once a piece has been captured, it no longer exists for movement"""
         g = JanggiGame()
@@ -156,7 +140,6 @@ class TestJanggiGame(unittest.TestCase):
         move_on_a_non_existent_piece = g.make_move('a4', 'a5') # move from a location owned by Red
         self.assertIs(move_on_a_non_existent_piece, False)
 
-#    @visibility('after_due_date')
     def test_that_after_a_piece_is_captured_the_game_can_still_continue(self):
         """RULES: test that after a capture, the other player can still move"""
         g = JanggiGame()
@@ -169,8 +152,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_move_by_red = g.make_move('e4', 'e5') # valid move by Red
         self.assertIs(valid_move_by_red, True)
 
-
-#    @visibility('visible')
     def test_passing_the_turn(self):
         """RULES: test that a player can pass the turn"""
         g = JanggiGame()
@@ -181,7 +162,6 @@ class TestJanggiGame(unittest.TestCase):
         move_result = g.make_move('b7', 'b6') # valid move by Blue
         self.assertIs(move_result, True)
 
-#    @visibility('after_due_date')
     def test_passing_the_turn_after_capturing(self):
         """RULES: test that a player can pass the turn, a turn after capturing another player's piece"""
         g = JanggiGame()
@@ -196,7 +176,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_move_after_passing = g.make_move('c5', 'c6')  # valid move by Red
         self.assertIs(valid_move_after_passing, True)
 
-#    @visibility('after_due_date')
     def test_passing_the_turn_after_being_captured(self):
         """RULES: test that a player can pass the turn, after their piece has been captured"""
         g = JanggiGame()
@@ -210,7 +189,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_move_after_passing = g.make_move('a4', 'a3')  # valid move by Blue
         self.assertIs(valid_move_after_passing, True)
 
-#    @visibility('visible')
     def test_valid_forward_move_for_red_chariot(self):
         """CHARIOT: test in the beginning of the game that a red chariot can perform a valid forward move"""
         #take a soldier for red
@@ -219,7 +197,6 @@ class TestJanggiGame(unittest.TestCase):
         red_chariot_forward_move = g.make_move('a1','a3')
         self.assertIs(red_chariot_forward_move, True)
 
-#    @visibility('visible')
     def test_valid_sideway_move_for_red_chariot(self):
         """CHARIOT: test in the beginning of the game that a red chariot can perform a valid sideway move"""
         # take a soldier for red
@@ -230,14 +207,12 @@ class TestJanggiGame(unittest.TestCase):
         red_chariot_sideway_move = g.make_move('a2', 'c2') #chariot moves sideway
         self.assertIs(red_chariot_sideway_move, True)
 
-#    @visibility('visible')
     def test_valid_forward_move_for_blue_chariot(self):
         """CHARIOT: test in the beginning of the game that a blue chariot can perform a valid forward move"""
         g = JanggiGame()
         blue_chariot_forward_move = g.make_move('a10', 'a8')  # because blue moves first
         self.assertIs(blue_chariot_forward_move, True)
 
-#    @visibility('visible')
     def test_valid_sideway_move_for_blue_chariot(self):
         """CHARIOT: test in the beginning of the game that a blue chariot can perform a valid sideway move"""
         g = JanggiGame()
@@ -246,7 +221,6 @@ class TestJanggiGame(unittest.TestCase):
         blue_chariot_sideway_move = g.make_move('a9','c9')
         self.assertIs(blue_chariot_sideway_move, True)
 
-#    @visibility('visible')
     def test_valid_backward_move_for_blue_chariot_in_south(self):
         """CHARIOT: test in the beginning of the game that a blue chariot can perform a backward move to south"""
         g = JanggiGame()
@@ -256,7 +230,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(blue_chariot_backward_move, True)
         pass
 
-#    @visibility('visible')
     def test_valid_backward_move_for_blue_chariot_in_west(self):
         """CHARIOT: test in the beginning of the game that a blue chariot can perform a backward move to west"""
         g = JanggiGame()
@@ -268,7 +241,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(blue_chariot_backward_move, True)
         pass
 
-#    @visibility('after_due_date')
     def test_invalid_diagonal_move_for_blue_chariot_in_northeast(self):
         """CHARIOT: test in the beginning of the game that a blue chariot cannot perform a diagonal move"""
         g = JanggiGame()
@@ -279,7 +251,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(invalid_chariot_diagonal_move, False)
         pass
 
-#    @visibility('after_due_date')
     def test_invalid_diagonal_move_for_red_chariot_to_southeast(self):
         """CHARIOT: test in the beginning of the game that a red chariot cannot perform a diagonal move"""
         g = JanggiGame()
@@ -291,7 +262,6 @@ class TestJanggiGame(unittest.TestCase):
         self.assertIs(invalid_chariot_diagonal_move, False)
         pass
 
-#    @visibility('visible')
     def test_valid_north_move_for_blue_cannon(self):
         """CANNON: test blue cannon can perform a valid north move"""
         g = JanggiGame()
@@ -300,7 +270,6 @@ class TestJanggiGame(unittest.TestCase):
         cannon_valid_move = g.make_move('b8','b4') # blue cannon jumps over blue soldier
         self.assertIs(cannon_valid_move, True)
 
-#    @visibility('visible')
     def test_valid_east_move_for_blue_cannon(self):
         """CANNON: test blue cannon can perform a valid east move"""
         g = JanggiGame()
@@ -313,7 +282,6 @@ class TestJanggiGame(unittest.TestCase):
         cannon_valid_move = g.make_move('b6', 'e6')  # blue cannon jumps over blue soldier east two steps
         self.assertIs(cannon_valid_move, True)
 
-#    @visibility('after_due_date')
     def test_valid_west_move_for_blue_cannon(self):
         """CANNON: test blue cannon can perform a valid west move"""
         g = JanggiGame()
@@ -331,7 +299,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_cannon_move_back = g.make_move('a5','h5') #blue cannon moves east
         self.assertIs(valid_cannon_move_back, True)
         
-#    @visibility('after_due_date')
     def test_valid_south_move_for_blue_cannon(self):
         """CANNON: test blue cannon can perform a valid south move"""
         g = JanggiGame()
@@ -350,21 +317,18 @@ class TestJanggiGame(unittest.TestCase):
         valid_cannon_move_back = g.make_move('a9','a6') #blue cannon moves north
         self.assertIs(valid_cannon_move_back, True)
  
-#    @visibility('visible')
     def test_invalid_diagonal_move_for_blue_cannon_with_a_screen(self):
         """CANNON: test blue cannon cannot perform an invalid diagonal move with a screen"""
         g = JanggiGame()
         cannon_invalid_move = g.make_move('b8', 'd6')  # blue cannon jumps northwest
         self.assertIs(cannon_invalid_move, False)
 
-#    @visibility('visible')
     def test_invalid_forward_move_for_blue_cannon_without_a_screen(self):
         """CANNON: test blue cannon cannot perform an invalid forward move without a screen"""
         g = JanggiGame()
         cannon_invalid_move = g.make_move('b8', 'b7')  # blue cannon move forward without a screen
         self.assertIs(cannon_invalid_move, False)
 
-#    @visibility('after_due_date')
     def test_invalid_forward_move_for_blue_cannon_capturing_another_cannon(self):
         """CANNON: test blue cannon cannot perform an invalid capture of red cannon"""
         g = JanggiGame()
@@ -377,7 +341,6 @@ class TestJanggiGame(unittest.TestCase):
         invalid_cannon_move = g.make_move('b6', 'b3') # cannon jumps over red soldier to capture red cannon
         self.assertIs(invalid_cannon_move, False)
 
-#    @visibility('after_due_date')
     def test_invalid_forward_move_for_blue_cannon_jumping_over_red_cannon(self):
         """CANNON: test blue cannon cannot perform an invalid jump over red cannon"""
         g = JanggiGame()
@@ -390,7 +353,6 @@ class TestJanggiGame(unittest.TestCase):
         invalid_cannon_move = g.make_move('b6', 'b2')  # blue cannon jumps over red cannon
         self.assertIs(invalid_cannon_move, False)
 
-#    @visibility('after_due_date')
     def test_valid_forward_move_for_blue_cannon_capturing_red_soldier(self):
         """CANNON: test blue cannon can capture red soldier successfully"""
         g = JanggiGame()
@@ -408,35 +370,30 @@ class TestJanggiGame(unittest.TestCase):
 
     """HORSES"""
 
-#    @visibility('visible')
     def test_valid_forward_move_for_blue_horse_on_west_side(self):
         """HORSE: test blue horse from west can make a valid move forward"""
         g = JanggiGame()
         valid_move = g.make_move('c10', 'd8')
         self.assertIs(valid_move, True)
 
-#    @visibility('visible')
     def test_valid_forward_move_for_blue_horse_on_east_side(self):
         """HORSE: test blue horse from east can make a valid move forward"""
         g = JanggiGame()
         valid_move = g.make_move('h10', 'g8')
         self.assertIs(valid_move, True)
 
-#    @visibility('visible')
     def test_invalid_forward_move_for_blue_horse_on_west_side(self):
         """HORSE: test blue horse from west cannot make an invalid move forward"""
         g = JanggiGame()
         invalid_move = g.make_move('c10', 'd7')
         self.assertIs(invalid_move, False)
 
-#    @visibility('visible')
     def test_invalid_forward_move_for_blue_horse_on_east_side(self):
         """HORSE: test blue horse from east cannot make an invalid move forward"""
         g = JanggiGame()
         valid_move = g.make_move('h10', 'f8')
         self.assertIs(valid_move, False)
 
-#    @visibility('visible')
     def test_horse_is_blocked_by_a_piece(self):
         """HORSE: test horse cannot jump over their own piece"""
         g = JanggiGame()
@@ -474,7 +431,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Red horse from east should not be able to jump over a red piece")
 
-#    @visibility('visible')
     def test_horse_can_capture_a_piece(self):
         """HORSE: test that a horse can capture another player's piece"""
         g = JanggiGame()
@@ -528,7 +484,7 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Blue Horse from East should be able to capture a Red soldier")
 
-#    @visibility('after_due_date')
+
     def test_horse_cannot_capture_own_piece(self):
         """HORSE: test that a horse cannot capture same player's piece"""
         g = JanggiGame()
@@ -564,7 +520,7 @@ class TestJanggiGame(unittest.TestCase):
             self.fail("Blue Horse from east should not be able to capture a blue piece")
 
     """GUARDS"""
-#    @visibility('visible')
+
     def test_valid_move_for_guard(self):
         """GUARD: test valid moves for guard"""
         g = JanggiGame()
@@ -632,7 +588,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Red Guard should be able to make a diagonal move")
 
-#    @visibility('after_due_date')
     def test_invalid_move_for_guard(self):
         """GUARD: test invalid moves for guard"""
         g = JanggiGame()
@@ -676,7 +631,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Red Guard should not be able to move outside the palace")
 
-#    @visibility('visible')
     def test_valid_move_for_elephant(self):
         """ELEPHANT: test elephants can make valid moves"""
         g = JanggiGame()
@@ -708,7 +662,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Red Elephant from east should be able to make a valid move")
 
-#    @visibility('after_due_date')
     def test_invalid_move_for_elephant(self):
         """ELEPHANT: test elephant cannot make invalid moves"""
         g = JanggiGame()
@@ -731,7 +684,6 @@ class TestJanggiGame(unittest.TestCase):
         invalid_move = g.make_move('g1','g5') #tries to jump over the soldier
         self.assertIs(invalid_move, False)
 
-#    @visibility('visible')
     def test_valid_moves_for_general(self):
         """GENERAL: test general can perform valid moves"""
         g = JanggiGame()
@@ -771,8 +723,6 @@ class TestJanggiGame(unittest.TestCase):
         valid_move = g.make_move('e2','e1') #red
         self.assertIs(valid_move, True)
 
-
-#    @visibility('visible')
     def test_invalid_moves_for_general(self):
         """GENERAL: test general cannot perform invalid moves"""
         g = JanggiGame()
@@ -821,7 +771,6 @@ class TestJanggiGame(unittest.TestCase):
         invalid_move = g.make_move('f3', 'e2')  # blue
         self.assertIs(invalid_move, False)
 
-#    @visibility('visible')
     def test_unfinished_game_state(self):
         """RULES: test that get_game_state returns UNFINISHED correctly"""
         g = JanggiGame()
@@ -831,7 +780,6 @@ class TestJanggiGame(unittest.TestCase):
         g.make_move('e4','e5')#red
         self.assertEqual(g.get_game_state().upper(), 'UNFINISHED')
 
-#    @visibility('after_due_date')
     def test_unfinished_game_state_after_capture(self):
         """RULES: test that get_game_state returns UNFINISHED correctly after a piece is captured"""
         g = JanggiGame()
@@ -855,8 +803,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be UNFINISHED if no one has won")
 
-
-#    @visibility('visible')
     def test_is_in_check_blue(self):
         """RULES: test that is_in_check detects check correctly for blue"""
         g = JanggiGame()
@@ -943,7 +889,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be UNFINISHED when a general is in check")
 
-#    @visibility('after_due_date')
     def test_is_in_check_red(self):
         """RULES: test that is_in_check detects check correctly for red"""
         g = JanggiGame()
@@ -1061,8 +1006,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be UNFINISHED when a general is in check")
 
-
-#    @visibility('after_due_date')
     def test_is_in_check_after_a_check_was_countered(self):
         """RULES: test that is_in_check detects check correctly after a check is countered"""
         g = JanggiGame()
@@ -1104,8 +1047,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be UNFINISHED since no one has won")
 
-
-#    @visibility('after_due_date')
     def test_a_checkmate_is_detected_correctly(self):
         g = JanggiGame()
         
@@ -1210,7 +1151,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be RED_WON when the BLUE general is checkmated")
 
-#    @visibility('after_due_date')
     def test_a_move_cannot_be_made_after_checkmate(self):
         """RULES: test that a move cannot be made after checkmate i.e. the one of the players has won"""
 
@@ -1290,7 +1230,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("make_move should not allow any move after a checkmate")
 
-#    @visibility('visible')
     def test_turn_taking_is_implemented_correctly(self):
         """RULES: test that turn taking is implemented correctly"""
         g = JanggiGame()
@@ -1325,7 +1264,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Red should be able to move after blue")
 
-#    @visibility('after_due_date')
     def test_that_horse_is_transposed_with_elephant_in_the_initial_setup_by_trying_to_move_it(self):
         """RULES: Transposition of Horse and Elephant is correct in the beginning"""
         g = JanggiGame()
@@ -1345,8 +1283,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Red Elephant from east is either not transposed correctly with Horse in the inital setup or cannot perform valid moves") 
 
-
-#    @visibility('after_due_date')
     def test_that_a_check_by_a_cannon_outside_the_palace_is_detected(self):
         """RULES: Check by a cannon outside the palace is detected"""
         g = JanggiGame()
@@ -1385,7 +1321,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Blue General is in check with a Cannon outside the palace and is_in_check should return True for blue")
  
-#    @visibility('after_due_date')
     def test_that_a_check_by_a_horse_outside_the_palace_is_detected(self):
         """RULES: Check by a horse outside the palace is detected"""
         g = JanggiGame()
@@ -1437,7 +1372,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Blue General is in check with a Horse outside the palace and is_in_check should return True for blue")
 
-#    @visibility('after_due_date')
     def test_that_countering_the_check_by_capturing_the_cannon_is_detected_correctly(self):
         """RULES: Countering the check by capturing the cannon is detected correctly"""
         g = JanggiGame()
@@ -1510,7 +1444,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be UNFINISHED when a general is in check but not checkmated")
 
-#    @visibility('after_due_date')
     def test_that_countering_the_check_by_blocking_the_cannon_is_detected_correctly(self):
         """RULES: Countering the check by blocking the cannon is detected correctly"""
         g = JanggiGame()
@@ -1573,7 +1506,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Game state should be UNFINISHED when a general is in check but not checkmated")
 
-#    @visibility('after_due_date')
     def test_that_check_forces_a_move_to_be_made_to_counter_the_check(self):
         """RULES:  Check forces a move to be made to counter the check"""
         g = JanggiGame()
@@ -1636,8 +1568,6 @@ class TestJanggiGame(unittest.TestCase):
         except:
             self.fail("Blue should be forced to make a move that evades a check when checked")
 
-
-#    @visibility('after_due_date')
     def test_red_won(self):
         """RULES: Test that red win is detected correctly."""
         g = JanggiGame()
